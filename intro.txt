@@ -1,0 +1,51 @@
+- go to js course practic and refres asynchronous part from there
+
+- when you return something from any async function no matter what it is it will always return the promise so you have to use await when you want to get actual returned value from function
+
+- in node 14 we can use top level await in lower version it's not posibble to use top level await so you have to use then and catch or better to wrap the functoion to one iffi function so you can use await in it.
+
+- when you return something from the async function which is not a promise then when you use that function with await or then js will always consider it as fullfiled promise because you returned something by yourself from function so if in that function used promisses fails and the code go to catch block we will not able to catch it where we use that function so on that senario you have to throw the err in catch block to catch it furthere
+
+const abc = () => {
+    try {
+        await api call
+    }
+    catch(err) {
+        clg(err)
+        throw(err)
+    }
+    return 'hii'
+}
+
+try {
+   clg(await abc()) 
+}
+catch (err) {
+    clg(err)
+}
+
+
+- as we all know callbacks was the only thing which we was able to use in node for asynchronous code but now node supports promisses and async await so we can use it the way we want 
+
+- because of this we have some ways to use async await in code node modules, third party packages and also our own code.
+
+- but keep in mind that because of the older way in which the core and third party library code was written which was by callbacks there are still some core node modules and some third party librarys which not support promisses so we have to promisify them if possible or we have to use the callback way for them.
+
+- also in older versions the commonJs was the only module system and ES6 module system come letter in node we can use ES6 module system in most of the node core modules and third party packages but still some core modules and third part packages not able to import by ES6 modules we have to use the commonJs only for them.
+
+- so as you can see because of some old ways we still have some code in node and js world which is not yet updated and we have to use old require and callback way to use them. 
+
+- now let's talk how we can use the promise bese way to node core modules 
+
+- if you are working on node version which is < 12 then the only way is to promisify the core modules so we can use the promise insted of callback. like we can promisify the readFile from fs.
+
+- if node version is >= 12 then we can use the .promise instance whic is avalable in most of the modules which use callbacks this instanse has all the methods and object which a normal module will have othe only change is all this methods return promise insted of accepting callback so we can consume promise.
+
+const fs = require('fs')
+const fsAsync = fs.promise
+
+or 
+const fs = require('fs').promise
+
+
+- the last option is node's utils package it hase promisify function which can help to promisify any callback base function of node and it also has some other things which we can use for promise.
